@@ -1,5 +1,5 @@
 {
-  "name": "nodex-sso-oidc",
+  "name": "@authnomicon/sso-oidc",
   "version": "0.0.0",
   "description": "",
   "author": {
