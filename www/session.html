@@ -1,0 +1,40 @@
+<head>
+  <title>Check Origin IFrame</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+	<script type="text/javascript">
+    
+    jQuery(function() {
+      console.log('set session iframe ready...')
+      
+      window.addEventListener('message', function (evt) {
+        switch (evt.data.type) {
+        case 'co_verifier_response':
+          console.log('GOT RESPONSE');
+          console.log(evt.data);
+          break;
+        }
+      });
+      
+      console.log('opener:');
+      console.log(window.opener);
+      console.log('parent:');
+      console.log(window.parent);
+      
+      // http://stackoverflow.com/questions/36499719/sending-postmessage-via-iframe-and-open-window-in-safari
+      
+      if (window.parent === window) {
+        console.log('ITS OWN WINDOW!');
+      }
+      
+      
+      if (window.opener) {
+        window.opener.postMessage({ type: 'co_verifier_request' }, 'http://localhost:3001');
+      }
+      
+    });
+    
+	</script>
+</body>
+    
