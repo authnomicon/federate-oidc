@@ -3,6 +3,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
+  
+  <form id='login' action="/oauth2/co/session" method="post">
+  	<input type="hidden" name="foo" value="bar"/>
+  </form>
+  
 	<script type="text/javascript">
     
     jQuery(function() {
@@ -13,6 +18,8 @@
         case 'co_verifier_response':
           console.log('GOT RESPONSE');
           console.log(evt.data);
+          
+          document.forms[0].submit();
           break;
         }
       });
