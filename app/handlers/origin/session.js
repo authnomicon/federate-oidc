@@ -4,8 +4,9 @@
 // or yes because this iframe is needed when the password is posted back to the host domain
 // XHR is needed to pass password to AS
 
-exports = module.exports = function(initialize, Tokens) {
-  var path = require('path');
+exports = module.exports = function(initialize, csrfProtection, Tokens) {
+  var path = require('path')
+    , ejs = require('ejs');
   
   
   function validateToken(req, res, next) {
@@ -28,14 +29,22 @@ exports = module.exports = function(initialize, Tokens) {
     });
   }
   
-  function respond(req, res) {
-    var f = path.join(__dirname, '../../../www/session.html');
-    res.sendFile(f);
+  function respond(req, res, next) {
+    res.locals.csrfToken = req.csrfToken();
+    res.locals.token = req.query.token;
+    
+    var filename = path.join(__dirname, '../../../www/session.html');
+    ejs.renderFile(filename, res.locals, function(err, html) {
+      if (err) { return next(err); }
+      return res.send(html);
+    });
+    //res.sendFile(f);
   }
   
   
   return [
     initialize(),
+    csrfProtection(),
     validateToken,
     respond
   ];
@@ -43,5 +52,6 @@ exports = module.exports = function(initialize, Tokens) {
 
 exports['@require'] = [
   'http://i.bixbyjs.org/http/middleware/initialize',
+  'http://i.bixbyjs.org/http/middleware/csrfProtection',
   'http://i.bixbyjs.org/tokens'
 ];

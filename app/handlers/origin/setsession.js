@@ -4,28 +4,49 @@
 // or yes because this iframe is needed when the password is posted back to the host domain
 // XHR is needed to pass password to AS
 
-exports = module.exports = function(initialize, parse, Tokens) {
+exports = module.exports = function(initialize, parse, csrfProtection, Tokens) {
   var path = require('path');
   
   
-  function validateToken(req, res, next) {
-    console.log('Validating session token...');
-    console.log(req.query)
-    
-    //if (!req.query.id_token_hint) { return next(new SkipSessionInitiationError()); }
-    
-    
-    
-    Tokens.decipher(req.query.token, { dialect: 'urn:ietf:params:oauth:token-type:id_token' }, function(err, claims, issuer) {
+  function decipherToken(req, res, next) {
+    Tokens.decipher(req.body.token, { dialect: 'urn:ietf:params:oauth:token-type:id_token' }, function(err, claims, issuer) {
       if (err) { return next(err); }
       
       console.log('GOT CLAIMS');
       console.log(claims);
       
-      //req.authInfo = req.authInfo || {};
-      req.locals.challenge = claims.confirmation[0].challenge;
+      req.locals.claims = claims;
       next();
     });
+  }
+  
+  function confirmToken(req, res, next) {
+    var confirmation = req.locals.claims.confirmation || []
+      , conf;
+
+    for (i = 0, len = confirmation.length; i < len; ++i) {
+      conf = confirmation[i];
+      
+      console.log('CHECK THIS:');
+      console.log(conf)
+      console.log(req.body);
+      
+      
+      switch (conf.method) {
+      case 'cross-origin':
+        if (conf.challenge !== req.body.co_verifier) { // TODO: SHA256
+          // TODO: HTTP ERRORS
+          return cb(new Error('Not confirmed'));
+        }
+        break;
+        
+      default:
+        // TODO: HTTP errors
+        return cb(new Error('Unsupported confirmation method: ' + conf.name));
+      }
+    }
+    
+    next();
   }
   
   function respond(req, res) {
@@ -39,7 +60,9 @@ exports = module.exports = function(initialize, parse, Tokens) {
   return [
     initialize(),
     parse('application/x-www-form-urlencoded'),
-    //validateToken,
+    csrfProtection(),
+    decipherToken,
+    confirmToken,
     respond
   ];
 };
@@ -47,5 +70,6 @@ exports = module.exports = function(initialize, parse, Tokens) {
 exports['@require'] = [
   'http://i.bixbyjs.org/http/middleware/initialize',
   'http://i.bixbyjs.org/http/middleware/parse',
+  'http://i.bixbyjs.org/http/middleware/csrfProtection',
   'http://i.bixbyjs.org/tokens'
 ];

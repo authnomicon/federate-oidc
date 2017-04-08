@@ -5,7 +5,8 @@
 <body>
   
   <form id='login' action="/oauth2/co/session" method="post">
-  	<input type="hidden" name="foo" value="bar"/>
+  	<input type="hidden" name="token" value="<%= token %>"/>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
   </form>
   
 	<script type="text/javascript">
@@ -18,6 +19,12 @@
         case 'co_verifier_response':
           console.log('GOT RESPONSE');
           console.log(evt.data);
+          
+          $('<input>', {
+            type: 'hidden',
+            name: 'co_verifier',
+            value:  evt.data.verifier
+          }).appendTo('#login');
           
           document.forms[0].submit();
           break;
