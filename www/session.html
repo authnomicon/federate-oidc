@@ -41,6 +41,10 @@
       
       if (window.opener) {
         window.opener.postMessage({ type: 'co_verifier_request' }, 'http://localhost:3001');
+      } else {
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('src', 'http://localhost:3001/co/verify');
+        document.body.appendChild(iframe);
       }
       
     })(this, this.document);
