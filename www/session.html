@@ -15,7 +15,16 @@
       
       
       window.addEventListener('message', function (evt) {
+        console.log('GOT EVENT IN SET SESSION');
+        console.log(evt.data);
+        console.log(evt.origin)
+        
         switch (evt.data.type) {
+        case 'ready':
+          console.log('VERIFIER READY!');
+          evt.source.postMessage({ type: 'co_verifier_request' }, 'http://localhost:3001');
+          break;
+          
         case 'co_verifier_response':
           var node = document.createElement('input');
           node.setAttribute('type', 'hidden');
