@@ -14,18 +14,15 @@
         console.log(evt.origin);
         console.log(evt.data);
         
-        /*
         switch (evt.data.type) {
-        case 'co_verifier_response':
-          var node = document.createElement('input');
-          node.setAttribute('type', 'hidden');
-          node.setAttribute('name', 'co_verifier');
-          node.setAttribute('value', evt.data.verifier);
-          document.forms[0].appendChild(node);
-          document.forms[0].submit();
+        case 'co_verifier_request':
+          var verifier = sessionStorage.getItem('co_verifier');
+          event.source.postMessage({
+            type: 'co_verifier_response',
+            verifier: verifier // TODO: Align this with wmrm
+          }, 'http://127.0.0.1:8080');
           break;
         }
-        */
       });
       
       var origin = 'http://127.0.0.1:8080'
