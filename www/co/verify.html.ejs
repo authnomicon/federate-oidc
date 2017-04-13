@@ -2,34 +2,30 @@
   <title>Verify Iframe</title>
 </head>
 <body>
-  
-	<script type="text/javascript">
-    
+  <script type="text/javascript">
     (function(window, document) {
-      console.log('verify iframe ready...')
+      // TODO: Get origin from param
+      var origin = 'http://127.0.0.1:8080'
+        , verifier;
       
-      
-      window.addEventListener('message', function (evt) {
-        console.log('GOT MESSAGE!');
-        console.log(evt.origin);
-        console.log(evt.data);
-        
+      window.addEventListener('message', function(evt) {
         switch (evt.data.type) {
         case 'co_verifier_request':
-          var verifier = sessionStorage.getItem('co_verifier');
+          verifier = sessionStorage.getItem('co_verifier');
+          // TODO: Remove verifier from storage.
+          // TODO: Get verifier key by origin.
+          
           event.source.postMessage({
             type: 'co_verifier_response',
-            verifier: verifier // TODO: Align this with wmrm
-          }, 'http://127.0.0.1:8080');
+            response: {
+              verifier: verifier
+            }
+          }, evt.origin);
           break;
         }
       });
       
-      var origin = 'http://127.0.0.1:8080'
-      
       window.parent.postMessage({ type: 'ready' }, origin);
-      
     })(this, this.document);
-    
-	</script>
+  </script>
 </body>
