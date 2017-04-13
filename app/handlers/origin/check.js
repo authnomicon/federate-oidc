@@ -5,12 +5,16 @@
 // XHR is needed to pass password to AS
 
 exports = module.exports = function() {
-  var path = require('path');
+  var path = require('path')
+    , ejs = require('ejs');
   
   
-  function respond(req, res) {
-    var f = path.join(__dirname, '../../../www/check.html');
-    res.sendFile(f);
+  function respond(req, res, next) {
+    var filename = path.join(__dirname, '../../../www/origin/check.html.ejs');
+    ejs.renderFile(filename, res.locals, function(err, html) {
+      if (err) { return next(err); }
+      return res.send(html);
+    });
   }
   
   
