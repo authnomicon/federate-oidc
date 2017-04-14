@@ -10,7 +10,7 @@ exports = module.exports = function() {
   
   
   function respond(req, res, next) {
-    var filename = path.join(__dirname, '../../../www/origin/check.html.ejs');
+    var filename = path.join(__dirname, '../../../www/origin/info.html.ejs');
     ejs.renderFile(filename, res.locals, function(err, html) {
       if (err) { return next(err); }
       return res.send(html);
