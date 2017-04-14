@@ -3,7 +3,7 @@
 </head>
 <body>
   <script type="text/javascript">
-    (function(window, document) {
+    (function(window) {
       // TODO: Get origin from param
       var origin = 'http://127.0.0.1:8080'
         , verifier;
@@ -26,6 +26,6 @@
       });
       
       window.parent.postMessage({ type: 'ready' }, origin);
-    })(this, this.document);
+    })(this);
   </script>
 </body>
