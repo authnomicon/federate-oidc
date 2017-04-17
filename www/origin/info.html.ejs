@@ -20,7 +20,7 @@
         info.rtt = (new Date).getTime() - ts;
       }
       
-      n = 'tmp.oc.' + String(Math.floor(1000 * Math.random()));
+      n = 'tmp.oi.' + String(Math.floor(1000 * Math.random()));
       v = String(Math.floor(1000000 * Math.random()));
       exp = new Date((new Date).getTime() + 10000);
       document.cookie = n + '=' + v + '; Expires=' + exp.toUTCString();
