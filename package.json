@@ -1,5 +1,5 @@
 {
-  "name": "@authnomicon/sso-oidc",
+  "name": "@authnomicon/federate-oidc",
   "version": "0.0.0",
   "description": "",
   "author": {
@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/authnomicon/nodex-sso-oidc.git"
+    "url": "git://github.com/authnomicon/federate-oidc.git"
   },
   "bugs": {
-    "url": "http://github.com/authnomicon/nodex-sso-oidc/issues"
+    "url": "http://github.com/authnomicon/federate-oidc/issues"
   },
   "license": "MIT",
   "licenses": [
