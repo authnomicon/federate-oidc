@@ -22,6 +22,12 @@
     }
   ],
   "main": "./app",
+  "assembly": {
+    "namespace": "federate/oidc",
+    "components": [
+      "statestore"
+    ]
+  },
   "dependencies": {
     "ejs": "^2.5.6"
   },
