@@ -9,5 +9,5 @@ exports = module.exports = function(s) {
 exports['@implements'] = 'http://schemas.authnomicon.org/js/sso/oidc/StateStore';
 exports['@singleton'] = true;
 exports['@require'] = [
-  'http://i.bixbyjs.org/http/workflow/StateStore'
+  'http://i.bixbyjs.org/http/state/Store'
 ];
